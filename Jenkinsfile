@@ -64,7 +64,7 @@ pipeline {
 				script {
 					version = readCurrentTag()
 				}
-			    sh "sed -i 's/version = \\'0.0.1-SNAPSHOT\\'/version = \\'$version\\'/' build.gradle"
+			    sh "sed -i 's/0.0.1-SNAPSHOT/$version/' build.gradle"
                 sh 'gradle build'
             }
         }

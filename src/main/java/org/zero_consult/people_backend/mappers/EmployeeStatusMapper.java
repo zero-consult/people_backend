@@ -1,6 +1,5 @@
 package org.zero_consult.people_backend.mappers;
 
-import org.zero_consult.idl.model.Status;
 import org.zero_consult.people_backend.entities.EmployeeStatus;
 
 public class EmployeeStatusMapper {
@@ -8,7 +7,7 @@ public class EmployeeStatusMapper {
         return org.zero_consult.idl.model.EmployeeStatus.fromValue(status.name());
     }
 
-    public static org.zero_consult.people_backend.entities.EmployeeStatus toEntity(Status status) {
+    public static EmployeeStatus toEntity(org.zero_consult.idl.model.EmployeeStatus status) {
         return EmployeeStatus.valueOf(status.name());
     }
 }
