@@ -1,0 +1,70 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '4.1.0'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id "org.openapi.generator" version '7.23.0'
+}
+
+group = 'org.zero_consult'
+version = '0.0.1-SNAPSHOT'
+description = 'people_backend'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation 'io.swagger.core.v3:swagger-core:2.2.52'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.52'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.10'
+    implementation 'org.postgresql:postgresql'
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+def buildDir = getLayout().getBuildDirectory().getAsFile().get();
+
+def generateJavaOpenApi = tasks.register('generateJavaOpenApi', GenerateTask) {
+    generatorName.set("spring")
+    //validateSpec.set(false)
+    inputSpec.set(new File("$rootDir/idl/employee-api.yaml"))
+    outputDir.set(new File("$buildDir/generated"))
+    apiPackage.set("org.zero_consult.idl.api")
+    modelPackage.set("org.zero_consult.idl.model")
+    schemaMappings.set([
+            "stream": "org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody"
+    ])
+    typeMappings.set([
+            "string+binary": "stream"
+    ])
+    configOptions.set([
+            dateLibrary       : "java8",
+            requestMappingMode: "none"
+    ])
+}
+
+sourceSets {
+    main {
+        java.srcDirs += "$buildDir/generated/src/main/java"
+        java.exclude 'org/openapitools/**'
+        java.exclude 'org/zero_consult/idl/api/**Controller**'
+    }
+}
+
+
+compileJava.dependsOn generateJavaOpenApi
