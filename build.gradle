@@ -55,7 +55,8 @@ def generateJavaOpenApi = tasks.register('generateJavaOpenApi', GenerateTask) {
     ])
     configOptions.set([
             dateLibrary       : "java8",
-            requestMappingMode: "none"
+            requestMappingMode: "none",
+            useOptional : "true",
     ])
 }
 
