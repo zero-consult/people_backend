@@ -18,11 +18,15 @@ public class Employee {
     private String firstName;
     private String functionTitle;
     private String lastName;
+    @ManyToOne
+    @JoinColumn(name="manager_id", nullable=true)
+    private Employee manager;
     private String phone;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date startDate;
     @Enumerated(EnumType.STRING)
     private EmployeeStatus status;
+
 
     public Employee() {
     }
@@ -65,6 +69,14 @@ public class Employee {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Employee getManager() {
+        return manager;
+    }
+
+    public void setManager(Employee manager) {
+        this.manager = manager;
     }
 
     public String getPhone() {

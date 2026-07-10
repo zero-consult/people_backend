@@ -1,18 +1,23 @@
 package org.zero_consult.people_backend.controllers;
 
+import org.jspecify.annotations.Nullable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.zero_consult.idl.api.EmployeesApi;
 import org.zero_consult.idl.model.Employee;
+import org.zero_consult.people_backend.exceptions.CircularManagerException;
 import org.zero_consult.people_backend.mappers.EmployeeMapper;
 import org.zero_consult.people_backend.services.EmployeeService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 public class EmployeeController implements EmployeesApi {
 
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
 
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
@@ -26,5 +31,23 @@ public class EmployeeController implements EmployeesApi {
                         .stream()
                         .map(EmployeeMapper::toIdl)
                         .toList());
+    }
+
+    @Override
+    public ResponseEntity<Employee> addEmployee(Employee employee) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(EmployeeMapper.toIdl(employeeService.addEmployee(EmployeeMapper.toEntity(employee))));
+        } catch (CircularManagerException e) {
+            throw new RuntimeException(e); // TODO
+        }
+    }
+
+    @Override
+    public ResponseEntity<Employee> updateEmployee(String id, Employee employee) {
+        try {
+            return ResponseEntity.ok(EmployeeMapper.toIdl(employeeService.updateEmployee(id, EmployeeMapper.toEntity(employee))));
+        } catch (CircularManagerException e) {
+            throw new RuntimeException(e); // TODO
+        }
     }
 }
