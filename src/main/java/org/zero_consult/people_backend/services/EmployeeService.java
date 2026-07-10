@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.zero_consult.people_backend.entities.Employee;
 import org.zero_consult.people_backend.exceptions.CircularManagerException;
+import org.zero_consult.people_backend.exceptions.EmployeeNotFoundException;
 import org.zero_consult.people_backend.repositories.EmployeeRepository;
 
 import java.util.ArrayList;
@@ -70,5 +71,9 @@ public class EmployeeService {
         if(entity.getManager() != null) {
             checkCircularReferences(entity.getManager(), ids);
         }
+    }
+
+    public Employee getEmployee(String id) throws EmployeeNotFoundException {
+        return employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException("Employee not found"));
     }
 }
