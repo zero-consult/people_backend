@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.zero_consult.people_backend.entities.Employee;
 import org.zero_consult.people_backend.exceptions.CircularManagerException;
-import org.zero_consult.people_backend.exceptions.EmployeeNotFoundException;
+import org.zero_consult.people_backend.exceptions.EntityNotFoundException;
 import org.zero_consult.people_backend.repositories.EmployeeRepository;
 
 import java.util.ArrayList;
@@ -32,14 +32,13 @@ public class EmployeeService {
             managerById.ifPresent(entity::setManager);
         }
         checkCircularReferences(entity);
-        employeeRepository.save(entity);
-        return null;
+        return employeeRepository.save(entity);
     }
 
-    public Employee updateEmployee(String id, Employee entity) throws CircularManagerException {
+    public Employee updateEmployee(String id, Employee entity) throws CircularManagerException, EntityNotFoundException {
         Optional<Employee> employeeById = employeeRepository.findById(id);
         if(employeeById.isEmpty()) {
-            throw new RuntimeException("Employee not found");
+            throw new EntityNotFoundException("Employee not found");
         }
         Employee employee = employeeById.get();
         employee.setDepartment(entity.getDepartment());
@@ -73,7 +72,7 @@ public class EmployeeService {
         }
     }
 
-    public Employee getEmployee(String id) throws EmployeeNotFoundException {
-        return employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException("Employee not found"));
+    public Employee getEmployee(String id) throws EntityNotFoundException {
+        return employeeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
     }
 }

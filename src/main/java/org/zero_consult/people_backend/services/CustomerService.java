@@ -1,0 +1,49 @@
+package org.zero_consult.people_backend.services;
+
+import org.springframework.stereotype.Controller;
+import org.zero_consult.people_backend.entities.Customer;
+import org.zero_consult.people_backend.exceptions.CircularManagerException;
+import org.zero_consult.people_backend.exceptions.EntityNotFoundException;
+import org.zero_consult.people_backend.repositories.CustomerRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Controller
+public class CustomerService {
+    private final CustomerRepository customerRepository;
+
+    public CustomerService(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
+
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
+    }
+
+    public Customer addCustomer(Customer entity) {
+        customerRepository.save(entity);
+        return null;
+    }
+
+    public Customer updateCustomer(String id, Customer entity) throws EntityNotFoundException {
+        Optional<Customer> customerById = customerRepository.findById(id);
+        if (customerById.isEmpty()) {
+            throw new EntityNotFoundException("Customer not found");
+        }
+        Customer customer = customerById.get();
+        customer.setCity(entity.getCity());
+        customer.setContactPersonFirstName(entity.getContactPersonFirstName());
+        customer.setContactPersonLastName(entity.getContactPersonLastName());
+        customer.setEmail(entity.getEmail());
+        customer.setPhone(entity.getPhone());
+        customer.setSector(entity.getSector());
+        customer.setStartDate(entity.getStartDate());
+        customer.setWebsite(entity.getWebsite());
+        return customerRepository.save(customer);
+    }
+
+    public Customer getCustomer(String id) throws EntityNotFoundException {
+        return customerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Customer not found"));
+    }
+}

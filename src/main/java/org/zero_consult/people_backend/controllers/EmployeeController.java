@@ -1,6 +1,5 @@
 package org.zero_consult.people_backend.controllers;
 
-import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -8,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.zero_consult.idl.api.EmployeesApi;
 import org.zero_consult.idl.model.Employee;
 import org.zero_consult.people_backend.exceptions.CircularManagerException;
-import org.zero_consult.people_backend.exceptions.EmployeeNotFoundException;
+import org.zero_consult.people_backend.exceptions.EntityNotFoundException;
 import org.zero_consult.people_backend.mappers.EmployeeMapper;
 import org.zero_consult.people_backend.services.EmployeeService;
 
@@ -49,6 +48,8 @@ public class EmployeeController implements EmployeesApi {
             return ResponseEntity.ok(EmployeeMapper.toIdl(employeeService.updateEmployee(id, EmployeeMapper.toEntity(employee))));
         } catch (CircularManagerException e) {
             throw new RuntimeException(e); // TODO
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e); // TODO
         }
     }
 
@@ -56,7 +57,7 @@ public class EmployeeController implements EmployeesApi {
     public ResponseEntity<Employee> getEmployee(String id) {
         try {
             return ResponseEntity.ok(EmployeeMapper.toIdl(employeeService.getEmployee(id)));
-        } catch (EmployeeNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             throw new RuntimeException(e); // TODO
         }
     }

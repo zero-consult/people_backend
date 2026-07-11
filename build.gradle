@@ -42,8 +42,7 @@ def buildDir = getLayout().getBuildDirectory().getAsFile().get();
 
 def generateJavaOpenApi = tasks.register('generateJavaOpenApi', GenerateTask) {
     generatorName.set("spring")
-    //validateSpec.set(false)
-    inputSpec.set(new File("$rootDir/idl/employee-api.yaml"))
+    inputSpec.set(new File("$rootDir/idl/people-api.yaml"))
     outputDir.set(new File("$buildDir/generated"))
     apiPackage.set("org.zero_consult.idl.api")
     modelPackage.set("org.zero_consult.idl.model")
