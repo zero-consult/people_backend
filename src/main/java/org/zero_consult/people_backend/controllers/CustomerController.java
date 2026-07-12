@@ -12,7 +12,7 @@ import org.zero_consult.people_backend.services.CustomerService;
 
 import java.util.List;
 
-@CrossOrigin(origins = {"http://localhost:5173", "http://people-frontend:5173"})
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5100"})
 @RestController
 public class CustomerController implements CustomersApi {
     private final CustomerService customerService;
