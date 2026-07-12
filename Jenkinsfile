@@ -76,7 +76,7 @@ pipeline {
 				    echo "pushing image"
 				    docker.withRegistry('http://nexus:8081', 'Nexus') {
 				        if(env.BRANCH_NAME != "production") {
-				            app = docker.build("docker-releases/people_backend_${env.BRANCH_NAME}:$TAG")
+				            app = docker.build("docker-releases/people_backend_${env.BRANCH_NAME}:$TAG", "--build-arg JAR_FILE=people-backend-$TAG.jar")
                             app.push("$TAG")
 				        } else {
                             app = docker.build("docker-releases/people_backend:$TAG")
