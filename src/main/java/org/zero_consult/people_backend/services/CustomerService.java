@@ -22,8 +22,7 @@ public class CustomerService {
     }
 
     public Customer addCustomer(Customer entity) {
-        customerRepository.save(entity);
-        return null;
+        return customerRepository.save(entity);
     }
 
     public Customer updateCustomer(String id, Customer entity) throws EntityNotFoundException {
