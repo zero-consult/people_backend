@@ -1,8 +1,8 @@
 package org.zero_consult.people_backend.services;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.zero_consult.people_backend.entities.Customer;
-import org.zero_consult.people_backend.exceptions.CircularManagerException;
 import org.zero_consult.people_backend.exceptions.EntityNotFoundException;
 import org.zero_consult.people_backend.repositories.CustomerRepository;
 
@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@Transactional
 public class CustomerService {
     private final CustomerRepository customerRepository;
 
