@@ -42,6 +42,7 @@ public class CustomerService {
         customer.setPhone(entity.getPhone());
         customer.setSector(entity.getSector());
         customer.setStartDate(entity.getStartDate());
+        customer.setStatus(entity.getStatus());
         customer.setWebsite(entity.getWebsite());
         return customerRepository.save(customer);
     }
