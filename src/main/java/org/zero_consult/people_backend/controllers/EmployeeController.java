@@ -13,7 +13,16 @@ import org.zero_consult.people_backend.services.EmployeeService;
 
 import java.util.List;
 
-@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174", "http://localhost:5100", "http://localhost:5101", "http://people.localhost", "http://timesheet.localhost"})
+@CrossOrigin(origins = {
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://people.localhost",
+        "http://timesheet.localhost",
+        "http://people.dev.localhost",
+        "http://timesheet.dev.localhost",
+        "http://people.tst.localhost",
+        "http://timesheet.tst.localhost"
+})
 @RestController
 public class EmployeeController implements EmployeesApi {
 
