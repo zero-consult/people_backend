@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.zero_consult.people_backend.entities.Employee;
 import org.zero_consult.people_backend.exceptions.CircularManagerException;
+import org.zero_consult.people_backend.exceptions.EntityHasTimesheetEntriesException;
 import org.zero_consult.people_backend.exceptions.EntityNotFoundException;
 import org.zero_consult.people_backend.repositories.EmployeeRepository;
 
@@ -27,17 +28,18 @@ public class EmployeeService {
     }
 
     public Employee addEmployee(Employee entity) throws CircularManagerException {
-        if(entity.getManager() != null) {
+        if (entity.getManager() != null) {
             Optional<Employee> managerById = employeeRepository.findById(entity.getManager().getId());
             managerById.ifPresent(entity::setManager);
         }
+        entity.setHasTimesheetEntries(false);
         checkCircularReferences(entity);
         return employeeRepository.save(entity);
     }
 
     public Employee updateEmployee(String id, Employee entity) throws CircularManagerException, EntityNotFoundException {
         Optional<Employee> employeeById = employeeRepository.findById(id);
-        if(employeeById.isEmpty()) {
+        if (employeeById.isEmpty()) {
             throw new EntityNotFoundException("Employee not found");
         }
         Employee employee = employeeById.get();
@@ -47,7 +49,7 @@ public class EmployeeService {
         employee.setFunctionTitle(entity.getFunctionTitle());
         employee.setLastName(entity.getLastName());
         employee.setManager(null);
-        if(entity.getManager() != null) {
+        if (entity.getManager() != null) {
             Optional<Employee> managerById = employeeRepository.findById(entity.getManager().getId());
             managerById.ifPresent(employee::setManager);
         }
@@ -63,16 +65,31 @@ public class EmployeeService {
     }
 
     private void checkCircularReferences(Employee entity, List<String> ids) throws CircularManagerException {
-        if(ids.contains(entity.getId())) {
+        if (ids.contains(entity.getId())) {
             throw new CircularManagerException("Circular reference detected");
         }
         ids.add(entity.getId());
-        if(entity.getManager() != null) {
+        if (entity.getManager() != null) {
             checkCircularReferences(entity.getManager(), ids);
         }
     }
 
     public Employee getEmployee(String id) throws EntityNotFoundException {
         return employeeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
+    }
+
+    public Employee updateEmployeeHasTimesheetEntries(String id, boolean hasTimesheetEntries) throws EntityNotFoundException {
+        Employee employee = getEmployee(id);
+        employee.setHasTimesheetEntries(hasTimesheetEntries);
+        return employeeRepository.save(employee);
+    }
+
+
+    public void deleteEmployee(String id) throws EntityNotFoundException, EntityHasTimesheetEntriesException {
+        Employee employee = getEmployee(id);
+        if (employee.isHasTimesheetEntries()) {
+            throw new EntityHasTimesheetEntriesException("Employee has timesheet entries");
+        }
+        employeeRepository.delete(employee);
     }
 }

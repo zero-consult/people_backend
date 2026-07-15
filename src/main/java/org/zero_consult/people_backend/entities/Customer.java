@@ -25,6 +25,7 @@ public class Customer {
     @Enumerated(EnumType.STRING)
     private CustomerStatus status;
     private String website;
+    private boolean hasTimesheetEntries;
 
     public String getId() {
         return id;
@@ -112,5 +113,13 @@ public class Customer {
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public boolean isHasTimesheetEntries() {
+        return hasTimesheetEntries;
+    }
+
+    public void setHasTimesheetEntries(boolean hasTimesheetEntries) {
+        this.hasTimesheetEntries = hasTimesheetEntries;
     }
 }

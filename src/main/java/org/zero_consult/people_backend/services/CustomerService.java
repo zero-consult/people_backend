@@ -3,6 +3,8 @@ package org.zero_consult.people_backend.services;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.zero_consult.people_backend.entities.Customer;
+import org.zero_consult.people_backend.entities.Employee;
+import org.zero_consult.people_backend.exceptions.EntityHasTimesheetEntriesException;
 import org.zero_consult.people_backend.exceptions.EntityNotFoundException;
 import org.zero_consult.people_backend.repositories.CustomerRepository;
 
@@ -23,6 +25,7 @@ public class CustomerService {
     }
 
     public Customer addCustomer(Customer entity) {
+        entity.setHasTimesheetEntries(false);
         return customerRepository.save(entity);
     }
 
@@ -45,5 +48,19 @@ public class CustomerService {
 
     public Customer getCustomer(String id) throws EntityNotFoundException {
         return customerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Customer not found"));
+    }
+
+    public Customer updateCustomerHasTimesheetEntries(String id, boolean hasTimesheetEntries) throws EntityNotFoundException {
+        Customer customer = getCustomer(id);
+        customer.setHasTimesheetEntries(hasTimesheetEntries);
+        return customerRepository.save(customer);
+    }
+
+    public void deleteCustomer(String id) throws EntityNotFoundException, EntityHasTimesheetEntriesException {
+        Customer customer = getCustomer(id);
+        if (customer.isHasTimesheetEntries()) {
+            throw new EntityHasTimesheetEntriesException("Customer has timesheet entries");
+        }
+        customerRepository.delete(customer);
     }
 }

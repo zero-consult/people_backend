@@ -14,6 +14,7 @@ public class CustomerMapper {
         mappedCustomer.setContactPersonLastName(customer.getContactPersonLastName());
         mappedCustomer.setCompanyName(customer.getCompanyName());
         mappedCustomer.setEmail(customer.getEmail());
+        mappedCustomer.setHasTimesheetEntries(Optional.of(customer.isHasTimesheetEntries()));
         mappedCustomer.setPhone(customer.getPhone());
         mappedCustomer.setStartDate(DateUtils.toIdl(customer.getStartDate()));
         mappedCustomer.setStatus(CustomerStatusMapper.toIdl(customer.getStatus()));
@@ -28,6 +29,7 @@ public class CustomerMapper {
         mappedCustomer.setContactPersonFirstName(customer.getContactPersonFirstName());
         mappedCustomer.setContactPersonLastName(customer.getContactPersonLastName());
         mappedCustomer.setEmail(customer.getEmail());
+        customer.getHasTimesheetEntries().ifPresent(mappedCustomer::setHasTimesheetEntries);
         customer.getId().ifPresent(mappedCustomer::setId);
         mappedCustomer.setPhone(customer.getPhone());
         mappedCustomer.setSector(SectorMapper.toEntity(customer.getSector()));

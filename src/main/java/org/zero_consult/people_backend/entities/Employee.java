@@ -26,6 +26,7 @@ public class Employee {
     private Date startDate;
     @Enumerated(EnumType.STRING)
     private EmployeeStatus status;
+    private boolean hasTimesheetEntries;
 
 
     public Employee() {
@@ -109,5 +110,13 @@ public class Employee {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public boolean isHasTimesheetEntries() {
+        return hasTimesheetEntries;
+    }
+
+    public void setHasTimesheetEntries(boolean hasTimesheetEntries) {
+        this.hasTimesheetEntries = hasTimesheetEntries;
     }
 }

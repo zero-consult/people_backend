@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.zero_consult.idl.api.EmployeesApi;
 import org.zero_consult.idl.model.Employee;
+import org.zero_consult.idl.model.UpdateCustomerHasTimesheetEntriesRequest;
 import org.zero_consult.people_backend.exceptions.CircularManagerException;
+import org.zero_consult.people_backend.exceptions.EntityHasTimesheetEntriesException;
 import org.zero_consult.people_backend.exceptions.EntityNotFoundException;
 import org.zero_consult.people_backend.mappers.EmployeeMapper;
 import org.zero_consult.people_backend.services.EmployeeService;
@@ -69,5 +71,27 @@ public class EmployeeController implements EmployeesApi {
         } catch (EntityNotFoundException e) {
             throw new RuntimeException(e); // TODO
         }
+    }
+
+    @CrossOrigin(origins = {})
+    @Override
+    public ResponseEntity<Employee> updateEmployeeHasTimesheetEntries(String id, UpdateCustomerHasTimesheetEntriesRequest updateHasTimesheetEntriesRequest) {
+        try {
+            return ResponseEntity.ok(EmployeeMapper.toIdl(employeeService.updateEmployeeHasTimesheetEntries(id, updateHasTimesheetEntriesRequest.getHasTimesheetEntries())));
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e); // TODO
+        }
+    }
+
+    @Override
+    public ResponseEntity<String> deleteEmployee(String id) {
+        try {
+            employeeService.deleteEmployee(id);
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e); // TODO
+        } catch (EntityHasTimesheetEntriesException e) {
+            throw new RuntimeException(e); // TODO
+        }
+        return ResponseEntity.ok("Employee deleted");
     }
 }

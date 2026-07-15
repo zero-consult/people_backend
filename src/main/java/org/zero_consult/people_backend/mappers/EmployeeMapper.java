@@ -21,6 +21,7 @@ public class EmployeeMapper {
         mappedEmployee.setEmail(employee.getEmail());
         mappedEmployee.setFirstName(employee.getFirstName());
         mappedEmployee.setFunctionTitle(employee.getFunctionTitle() != null && !employee.getFunctionTitle().isEmpty() ? Optional.of(employee.getFunctionTitle()) : Optional.empty());
+        mappedEmployee.setHasTimesheetEntries(Optional.of(employee.isHasTimesheetEntries()));
         mappedEmployee.setLastName(employee.getLastName());
         mappedEmployee.setManager(employee.getManager() != null && !ids.contains(employee.getManager().getId()) ? Optional.of(EmployeeMapper.toIdl(employee.getManager(), ids)) : null);
         mappedEmployee.setPhone(employee.getPhone());
@@ -35,6 +36,7 @@ public class EmployeeMapper {
         mappedEmployee.setEmail(employee.getEmail());
         mappedEmployee.setFirstName(employee.getFirstName());
         employee.getFunctionTitle().ifPresent(mappedEmployee::setFunctionTitle);
+        employee.getHasTimesheetEntries().ifPresent(mappedEmployee::setHasTimesheetEntries);
         employee.getId().ifPresent(mappedEmployee::setId);
         mappedEmployee.setLastName(employee.getLastName());
         employee.getManager().ifPresent((manager) -> mappedEmployee.setManager(EmployeeMapper.toEntity(manager)));
