@@ -27,13 +27,12 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public Employee addEmployee(Employee entity) throws CircularManagerException {
+    public Employee addEmployee(Employee entity) {
         if (entity.getManager() != null) {
             Optional<Employee> managerById = employeeRepository.findById(entity.getManager().getId());
             managerById.ifPresent(entity::setManager);
         }
         entity.setHasTimesheetEntries(false);
-        checkCircularReferences(entity);
         return employeeRepository.save(entity);
     }
 
@@ -66,7 +65,7 @@ public class EmployeeService {
 
     private void checkCircularReferences(Employee entity, List<String> ids) throws CircularManagerException {
         if (ids.contains(entity.getId())) {
-            throw new CircularManagerException("Circular reference detected");
+            throw new CircularManagerException("Circular reference detected. Another manager is required.");
         }
         ids.add(entity.getId());
         if (entity.getManager() != null) {

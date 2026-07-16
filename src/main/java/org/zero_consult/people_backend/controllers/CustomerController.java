@@ -1,6 +1,7 @@
 package org.zero_consult.people_backend.controllers;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,7 @@ import org.zero_consult.idl.model.Employee;
 import org.zero_consult.idl.model.UpdateCustomerHasTimesheetEntriesRequest;
 import org.zero_consult.people_backend.exceptions.EntityHasTimesheetEntriesException;
 import org.zero_consult.people_backend.exceptions.EntityNotFoundException;
+import org.zero_consult.people_backend.exceptions.RestControllerException;
 import org.zero_consult.people_backend.mappers.CustomerMapper;
 import org.zero_consult.people_backend.mappers.EmployeeMapper;
 import org.zero_consult.people_backend.services.CustomerService;
@@ -54,7 +56,7 @@ public class CustomerController implements CustomersApi {
         try {
             return ResponseEntity.ok(CustomerMapper.toIdl(customerService.getCustomer(id)));
         } catch (EntityNotFoundException e) {
-            throw new RuntimeException(e); // TODO
+            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage());
         }
     }
 
@@ -63,7 +65,7 @@ public class CustomerController implements CustomersApi {
         try {
             return ResponseEntity.ok(CustomerMapper.toIdl(customerService.updateCustomer(id, CustomerMapper.toEntity(customer))));
         } catch (EntityNotFoundException e) {
-            throw new RuntimeException(e); // TODO
+            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage());
         }
     }
 
@@ -73,7 +75,7 @@ public class CustomerController implements CustomersApi {
         try {
             return ResponseEntity.ok(CustomerMapper.toIdl(customerService.updateCustomerHasTimesheetEntries(id, updateHasTimesheetEntriesRequest.getHasTimesheetEntries())));
         } catch (EntityNotFoundException e) {
-            throw new RuntimeException(e); // TODO
+            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage());
         }
     }
 
@@ -82,9 +84,9 @@ public class CustomerController implements CustomersApi {
         try {
             customerService.deleteCustomer(id);
         } catch (EntityNotFoundException e) {
-            throw new RuntimeException(e); // TODO
+            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage());
         } catch (EntityHasTimesheetEntriesException e) {
-            throw new RuntimeException(e); // TODO
+            throw new RestControllerException(HttpStatusCode.valueOf(405), e.getMessage());
         }
         return ResponseEntity.ok("Customer deleted");
     }
