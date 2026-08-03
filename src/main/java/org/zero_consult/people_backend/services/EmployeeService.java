@@ -42,6 +42,7 @@ public class EmployeeService {
             throw new EntityNotFoundException("Employee not found");
         }
         Employee employee = employeeById.get();
+        employee.setGrossWage(entity.getGrossWage());
         employee.setDepartment(entity.getDepartment());
         employee.setEmail(entity.getEmail());
         employee.setFirstName(entity.getFirstName());

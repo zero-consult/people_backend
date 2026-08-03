@@ -110,20 +110,21 @@ public class CustomerControllerTests {
 
     private Customer initData(boolean hasTimesheetEntries) {
         Customer entity = new Customer();
-        entity.setCompanyName("Company X");
-        entity.setEmail("jane.doe@x.com");
         entity.setContactPersonFirstName("Jane");
         entity.setContactPersonLastName("Doe");
+        entity.setCompanyName("Company X");
         entity.setCity("Leuven");
-        entity.setWebsite("www.companyx.com");
+        entity.setEmail("jane.doe@x.com");
+        entity.setHasTimesheetEntries(hasTimesheetEntries);
+        entity.setHiringRatePerHour(100.00);
         entity.setSector(Sector.EDUCATION);
         entity.setPhone("1234567890");
-        entity.setStatus(CustomerStatus.ACTIVE);
         try {
             entity.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse("2026-07-20"));
         } catch (ParseException ignore) {
         }
-        entity.setHasTimesheetEntries(hasTimesheetEntries);
+        entity.setStatus(CustomerStatus.ACTIVE);
+        entity.setWebsite("www.companyx.com");
         return customerRepository.save(entity);
     }
 }

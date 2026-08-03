@@ -17,6 +17,7 @@ public class Employee {
     private String email;
     private String firstName;
     private String functionTitle;
+    private Double grossWage;
     private String lastName;
     @ManyToOne
     @JoinColumn(name="manager_id", nullable=true)
@@ -31,6 +32,8 @@ public class Employee {
 
     public Employee() {
     }
+
+
 
     public Department getDepartment() {
         return department;
@@ -62,6 +65,14 @@ public class Employee {
 
     public void setFunctionTitle(String functionTitle) {
         this.functionTitle = functionTitle;
+    }
+
+    public Double getGrossWage() {
+        return grossWage;
+    }
+
+    public void setGrossWage(Double grossWage) {
+        this.grossWage = grossWage;
     }
 
     public String getLastName() {

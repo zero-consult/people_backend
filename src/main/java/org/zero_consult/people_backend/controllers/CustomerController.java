@@ -21,12 +21,13 @@ import java.util.List;
 @CrossOrigin(origins = {
         "http://localhost:5173",
         "http://localhost:5174",
+        "http://localhost:5175",
+        "http://invoices.localhost",
         "http://people.localhost",
         "http://timesheet.localhost",
+        "http://invoices.dev.localhost",
         "http://people.dev.localhost",
-        "http://timesheet.dev.localhost",
-        "http://people.tst.localhost",
-        "http://timesheet.tst.localhost"
+        "http://timesheet.dev.localhost"
 })
 @RestController
 public class CustomerController implements CustomersApi {

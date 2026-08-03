@@ -17,6 +17,7 @@ public class Customer {
     private String contactPersonFirstName;
     private String contactPersonLastName;
     private String email;
+    private Double hiringRatePerHour;
     private String phone;
     @Enumerated(EnumType.STRING)
     private Sector sector;
@@ -73,6 +74,14 @@ public class Customer {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Double getHiringRatePerHour() {
+        return hiringRatePerHour;
+    }
+
+    public void setHiringRatePerHour(Double hiringRatePerHour) {
+        this.hiringRatePerHour = hiringRatePerHour;
     }
 
     public String getPhone() {

@@ -17,6 +17,7 @@ public class EmployeeMapper {
         ids.add(employee.getId());
         Employee mappedEmployee = new Employee();
         mappedEmployee.setId(employee.getId() != null ? Optional.of(employee.getId()) : Optional.empty());
+        mappedEmployee.setGrossWage(employee.getGrossWage());
         mappedEmployee.setDepartment(employee.getDepartment() != null ? Optional.of(DepartmentMapper.toIdl(employee.getDepartment())) : Optional.empty());
         mappedEmployee.setEmail(employee.getEmail());
         mappedEmployee.setFirstName(employee.getFirstName());
@@ -32,6 +33,7 @@ public class EmployeeMapper {
 
     public static org.zero_consult.people_backend.entities.Employee toEntity(Employee employee) {
         org.zero_consult.people_backend.entities.Employee mappedEmployee = new org.zero_consult.people_backend.entities.Employee();
+        mappedEmployee.setGrossWage(employee.getGrossWage());
         employee.getDepartment().ifPresent((department) -> mappedEmployee.setDepartment(DepartmentMapper.toEntity(department)));
         mappedEmployee.setEmail(employee.getEmail());
         mappedEmployee.setFirstName(employee.getFirstName());

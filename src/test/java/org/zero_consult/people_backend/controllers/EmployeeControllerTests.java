@@ -112,18 +112,19 @@ public class EmployeeControllerTests {
 
     private Employee initData(boolean hasTimesheetEntries) {
         Employee entity = new Employee();
+        entity.setGrossWage(4000.00);
         entity.setDepartment(Department.ENGINEERING);
         entity.setEmail("john.doe@x.com");
         entity.setFirstName("John");
-        entity.setLastName("Doe");
         entity.setFunctionTitle("Software Engineer");
+        entity.setHasTimesheetEntries(hasTimesheetEntries);
+        entity.setLastName("Doe");
         entity.setPhone("1234567890");
-        entity.setStatus(EmployeeStatus.ACTIVE);
         try {
             entity.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse("2026-07-20"));
         } catch (ParseException ignore) {
         }
-        entity.setHasTimesheetEntries(hasTimesheetEntries);
+        entity.setStatus(EmployeeStatus.ACTIVE);
         return employeeRepository.save(entity);
     }
 }
