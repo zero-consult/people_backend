@@ -39,6 +39,7 @@ public class CustomerService {
         customer.setContactPersonFirstName(entity.getContactPersonFirstName());
         customer.setContactPersonLastName(entity.getContactPersonLastName());
         customer.setEmail(entity.getEmail());
+        customer.setHiringRatePerHour(entity.getHiringRatePerHour());
         customer.setPhone(entity.getPhone());
         customer.setSector(entity.getSector());
         customer.setStartDate(entity.getStartDate());

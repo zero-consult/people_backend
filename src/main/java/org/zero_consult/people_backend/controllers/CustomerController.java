@@ -57,7 +57,7 @@ public class CustomerController implements CustomersApi {
         try {
             return ResponseEntity.ok(CustomerMapper.toIdl(customerService.getCustomer(id)));
         } catch (EntityNotFoundException e) {
-            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage());
+            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage(), e);
         }
     }
 
@@ -66,7 +66,7 @@ public class CustomerController implements CustomersApi {
         try {
             return ResponseEntity.ok(CustomerMapper.toIdl(customerService.updateCustomer(id, CustomerMapper.toEntity(customer))));
         } catch (EntityNotFoundException e) {
-            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage());
+            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage(), e);
         }
     }
 
@@ -76,7 +76,7 @@ public class CustomerController implements CustomersApi {
         try {
             return ResponseEntity.ok(CustomerMapper.toIdl(customerService.updateCustomerHasTimesheetEntries(id, updateHasTimesheetEntriesRequest.getHasTimesheetEntries())));
         } catch (EntityNotFoundException e) {
-            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage());
+            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage(), e);
         }
     }
 
@@ -85,9 +85,9 @@ public class CustomerController implements CustomersApi {
         try {
             customerService.deleteCustomer(id);
         } catch (EntityNotFoundException e) {
-            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage());
+            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage(), e);
         } catch (EntityHasTimesheetEntriesException e) {
-            throw new RestControllerException(HttpStatusCode.valueOf(405), e.getMessage());
+            throw new RestControllerException(HttpStatusCode.valueOf(405), e.getMessage(), e);
         }
         return ResponseEntity.ok("Customer deleted");
     }

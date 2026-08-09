@@ -57,9 +57,9 @@ public class EmployeeController implements EmployeesApi {
         try {
             return ResponseEntity.ok(EmployeeMapper.toIdl(employeeService.updateEmployee(id, EmployeeMapper.toEntity(employee))));
         } catch (CircularManagerException e) {
-            throw new RestControllerException(HttpStatusCode.valueOf(406), e.getMessage());
+            throw new RestControllerException(HttpStatusCode.valueOf(406), e.getMessage(), e);
         } catch (EntityNotFoundException e) {
-            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage());
+            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage(), e);
         }
     }
 
@@ -68,7 +68,7 @@ public class EmployeeController implements EmployeesApi {
         try {
             return ResponseEntity.ok(EmployeeMapper.toIdl(employeeService.getEmployee(id)));
         } catch (EntityNotFoundException e) {
-            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage());
+            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage(), e);
         }
     }
 
@@ -78,7 +78,7 @@ public class EmployeeController implements EmployeesApi {
         try {
             return ResponseEntity.ok(EmployeeMapper.toIdl(employeeService.updateEmployeeHasTimesheetEntries(id, updateHasTimesheetEntriesRequest.getHasTimesheetEntries())));
         } catch (EntityNotFoundException e) {
-            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage());
+            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage(), e);
         }
     }
 
@@ -87,9 +87,9 @@ public class EmployeeController implements EmployeesApi {
         try {
             employeeService.deleteEmployee(id);
         } catch (EntityNotFoundException e) {
-            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage());
+            throw new RestControllerException(HttpStatusCode.valueOf(404), e.getMessage(), e);
         } catch (EntityHasTimesheetEntriesException e) {
-            throw new RestControllerException(HttpStatusCode.valueOf(405), e.getMessage());
+            throw new RestControllerException(HttpStatusCode.valueOf(405), e.getMessage(), e);
         }
         return ResponseEntity.ok("Employee deleted");
     }
