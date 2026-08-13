@@ -21,6 +21,7 @@ import java.util.List;
 
 @CrossOrigin(origins = {
         "http://localhost",
+        "http://dev.localhost",
         "http://localhost:5173",
         "http://localhost:5174",
         "http://localhost:5175",

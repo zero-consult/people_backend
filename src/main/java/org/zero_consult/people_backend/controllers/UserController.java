@@ -19,6 +19,7 @@ import org.zero_consult.people_backend.services.UserService;
 
 @CrossOrigin(origins = {
         "http://localhost",
+        "http://dev.localhost",
         "http://localhost:5173",
         "http://localhost:5174",
         "http://localhost:5175",
