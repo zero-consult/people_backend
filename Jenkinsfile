@@ -55,8 +55,8 @@ pipeline {
 						env.PATCH_VERSION = env.PATCH_VERSION.toInteger() + 1
 					}
 				}
-                sh "git config --global user.email 'mathias.ver.elst@gmail.com'"
-                sh "git config --global user.name 'Jenkins'"
+                sh "git config --global appUser.email 'mathias.ver.elst@gmail.com'"
+                sh "git config --global appUser.name 'Jenkins'"
                 sh "git tag -a ${env.MAJOR_VERSION}.${env.MINOR_VERSION}.${env.PATCH_VERSION} -m '${env.MAJOR_VERSION}.${env.MINOR_VERSION}.${env.PATCH_VERSION}'"
                 sh "GIT_SSH='ssh -i ~/.ssh/id_rsa'"
                 sh "git push git@github.com:zero-consult/people_backend.git ${env.MAJOR_VERSION}.${env.MINOR_VERSION}.${env.PATCH_VERSION}"

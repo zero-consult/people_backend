@@ -3,6 +3,7 @@ package org.zero_consult.people_backend.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.zero_consult.idl.api.EmployeesApi;
@@ -18,6 +19,7 @@ import org.zero_consult.people_backend.services.EmployeeService;
 import java.util.List;
 
 @CrossOrigin(origins = {
+        "http://localhost",
         "http://localhost:5173",
         "http://localhost:5174",
         "http://localhost:5175",
@@ -38,6 +40,7 @@ public class EmployeeController implements EmployeesApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<List<Employee>> employeesList() {
         return ResponseEntity.ok(
                 employeeService
@@ -48,11 +51,13 @@ public class EmployeeController implements EmployeesApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Employee> addEmployee(Employee employee) {
         return ResponseEntity.status(HttpStatus.CREATED).body(EmployeeMapper.toIdl(employeeService.addEmployee(EmployeeMapper.toEntity(employee))));
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Employee> updateEmployee(String id, Employee employee) {
         try {
             return ResponseEntity.ok(EmployeeMapper.toIdl(employeeService.updateEmployee(id, EmployeeMapper.toEntity(employee))));
@@ -64,6 +69,7 @@ public class EmployeeController implements EmployeesApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<Employee> getEmployee(String id) {
         try {
             return ResponseEntity.ok(EmployeeMapper.toIdl(employeeService.getEmployee(id)));
@@ -72,8 +78,8 @@ public class EmployeeController implements EmployeesApi {
         }
     }
 
-    @CrossOrigin(origins = {})
     @Override
+    @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<Employee> updateEmployeeHasTimesheetEntries(String id, UpdateCustomerHasTimesheetEntriesRequest updateHasTimesheetEntriesRequest) {
         try {
             return ResponseEntity.ok(EmployeeMapper.toIdl(employeeService.updateEmployeeHasTimesheetEntries(id, updateHasTimesheetEntriesRequest.getHasTimesheetEntries())));
@@ -83,6 +89,7 @@ public class EmployeeController implements EmployeesApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteEmployee(String id) {
         try {
             employeeService.deleteEmployee(id);

@@ -3,6 +3,7 @@ package org.zero_consult.people_backend.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.zero_consult.idl.api.CustomersApi;
@@ -19,6 +20,7 @@ import org.zero_consult.people_backend.services.CustomerService;
 import java.util.List;
 
 @CrossOrigin(origins = {
+        "http://localhost",
         "http://localhost:5173",
         "http://localhost:5174",
         "http://localhost:5175",
@@ -38,11 +40,13 @@ public class CustomerController implements CustomersApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Customer> addCustomer(Customer customer) {
         return ResponseEntity.status(HttpStatus.CREATED).body(CustomerMapper.toIdl(customerService.addCustomer(CustomerMapper.toEntity(customer))));
     }
 
     @Override
+    @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<List<Customer>> customersList() {
         return ResponseEntity.ok(
                 customerService
@@ -53,6 +57,7 @@ public class CustomerController implements CustomersApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<Customer> getCustomer(String id) {
         try {
             return ResponseEntity.ok(CustomerMapper.toIdl(customerService.getCustomer(id)));
@@ -62,6 +67,7 @@ public class CustomerController implements CustomersApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Customer> updateCustomer(String id, Customer customer) {
         try {
             return ResponseEntity.ok(CustomerMapper.toIdl(customerService.updateCustomer(id, CustomerMapper.toEntity(customer))));
@@ -72,6 +78,7 @@ public class CustomerController implements CustomersApi {
 
     @CrossOrigin(origins = {})
     @Override
+    @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<Customer> updateCustomerHasTimesheetEntries(String id, UpdateCustomerHasTimesheetEntriesRequest updateHasTimesheetEntriesRequest) {
         try {
             return ResponseEntity.ok(CustomerMapper.toIdl(customerService.updateCustomerHasTimesheetEntries(id, updateHasTimesheetEntriesRequest.getHasTimesheetEntries())));
@@ -81,6 +88,7 @@ public class CustomerController implements CustomersApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteCustomer(String id) {
         try {
             customerService.deleteCustomer(id);

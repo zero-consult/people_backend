@@ -7,20 +7,24 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.zero_consult.people_backend.PeopleBackendApplication;
-import org.zero_consult.people_backend.entities.*;
-import org.zero_consult.people_backend.repositories.CustomerRepository;
+import org.zero_consult.people_backend.configuration.TestConfig;
+import org.zero_consult.people_backend.entities.Customer;
+import org.zero_consult.people_backend.entities.CustomerStatus;
+import org.zero_consult.people_backend.entities.Sector;
 import org.zero_consult.people_backend.repositories.CustomerRepository;
 
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+@Import({TestConfig.class})
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
@@ -34,7 +38,7 @@ public class CustomerControllerTests {
         this.mvc = mvc;
         this.customerRepository = customerRepository;
     }
-    
+
     @Test
     public void testCustomerList() throws Exception {
         initData();

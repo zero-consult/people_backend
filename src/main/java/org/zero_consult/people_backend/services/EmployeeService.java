@@ -78,6 +78,14 @@ public class EmployeeService {
         return employeeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
     }
 
+    public Employee getEmployeeByEmail(String email) throws EntityNotFoundException {
+        Employee byEmail = employeeRepository.findByEmail(email);
+        if(byEmail == null) {
+            throw new EntityNotFoundException("Employee for mail " + email + " could not be found.");
+        }
+        return byEmail;
+    }
+
     public Employee updateEmployeeHasTimesheetEntries(String id, boolean hasTimesheetEntries) throws EntityNotFoundException {
         Employee employee = getEmployee(id);
         employee.setHasTimesheetEntries(hasTimesheetEntries);
